@@ -1,0 +1,32 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "fps_container",
+        anchor: TopLeft,
+        x: 61.,
+        y: 16,
+        width: 120.,
+        height: 30.,
+        transparent: true,
+    ),
+    background: (
+        image: Data(Rgba((0.36, 0.10, 0.57, 1.0), ())),
+    ),
+    children: [
+        Text(
+            transform: (
+                id: "fps_text",
+                z: -3.,
+                width: 120.,
+                height: 30.,
+                anchor: Middle,
+            ),
+            text: (
+                text: "N/A",
+                font_size: 25.,
+                color: (1., 1., 1., 1.),
+                font: File("fonts/Inconsolata-Regular.ttf", Ttf, ()),
+            ),
+        )
+    ],
+)
