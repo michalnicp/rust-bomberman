@@ -35,17 +35,11 @@ fn main() -> amethyst::Result<()> {
 
     let game_data_builder = GameDataBuilder::default()
         .with_bundle(TransformBundle::new())?
-        .with_bundle(UiBundle::<String, String>::new())?
         .with_bundle(FPSCounterBundle::default())?
-        .with_bundle(InputBundle::<String, String>::new())?
-        .with_bundle(RenderBundle::new(pipeline_builder, Some(display_config)).with_sprite_sheet_processor())?
-        .with(systems::DebugSystem, "debug_system", &[]);
+        .with_bundle(UiBundle::<String, String>::new())?
+        .with_bundle(RenderBundle::new(pipeline_builder, Some(display_config)))?;
 
-    let mut game = Application::new(
-        resources_path,
-        states::Loading::default(),
-        game_data_builder,
-    )?;
+    let mut game = Application::new(resources_path, states::Loading::default(), game_data_builder)?;
     game.run();
 
     Ok(())
