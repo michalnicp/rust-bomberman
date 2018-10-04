@@ -8,7 +8,7 @@ use amethyst::core::transform::TransformBundle;
 use amethyst::input::InputBundle;
 use amethyst::prelude::*;
 use amethyst::renderer::{
-    DisplayConfig, DrawFlat, Pipeline, PosNormTex, RenderBundle, Stage,
+    DisplayConfig, DrawFlat, Pipeline, PosTex, RenderBundle, Stage,
 };
 use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::utils::fps_counter::FPSCounterBundle;
@@ -29,7 +29,7 @@ fn main() -> amethyst::Result<()> {
     let pipeline_builder = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target(CLEAR_COLOUR, 1.0)
-            .with_pass(DrawFlat::<PosNormTex>::new())
+            .with_pass(DrawFlat::<PosTex>::new())
             .with_pass(DrawUi::new()),
     );
 
@@ -38,7 +38,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(UiBundle::<String, String>::new())?
         .with_bundle(FPSCounterBundle::default())?
         .with_bundle(InputBundle::<String, String>::new())?
-        .with_bundle(RenderBundle::new(pipeline_builder, Some(display_config)))?
+        .with_bundle(RenderBundle::new(pipeline_builder, Some(display_config)).with_sprite_sheet_processor())?
         .with(systems::DebugSystem, "debug_system", &[]);
 
     let mut game = Application::new(
