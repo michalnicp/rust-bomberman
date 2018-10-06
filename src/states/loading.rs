@@ -1,6 +1,6 @@
 use amethyst::core::Time;
 use amethyst::core::transform::{GlobalTransform, Transform};
-use amethyst::core::cgmath::Vector3;
+use amethyst::core::cgmath::{Array, Deg, Euler, Quaternion, Rotation3, Vector3};
 use amethyst::assets::{Loader, AssetStorage};
 use amethyst::input::{is_close_requested, is_key_down};
 use amethyst::renderer::{Event, VirtualKeyCode, PosTex, Material, MaterialDefaults, Mesh, MeshHandle, Texture, Shape};
@@ -98,7 +98,7 @@ impl<'a, 'b> State<GameData<'a, 'b>> for Loading {
             //     (),
             //     &mesh_storage);
             let mesh: MeshHandle = loader.load_from_data(
-                Shape::Sphere(32, 32).generate::<Vec<PosTex>>(None),
+                Shape::Plane(None).generate::<Vec<PosTex>>(None),
                 (),
                 &mesh_storage,
             );
@@ -107,15 +107,18 @@ impl<'a, 'b> State<GameData<'a, 'b>> for Loading {
         };
 
         let mut transform = Transform::default();
-        transform.translation = Vector3::new(5., 0., -2.0);
-        transform.scale = Vector3::new(5., 5., 5.);
+        transform.translation = Vector3::new(0., 0., 0.);
+
+        transform.scale = Vector3::new(0.5, 0.5, 0.5);
+        // transform.rotation = Quaternion::new(1.0, 0.0, 1.0, 0.0);
+        // transform.rotation = Quaternion::from(Euler::new(Deg(30.0), Deg(-30.0), Deg(0.0))).into();
 
         world
             .create_entity()
             .with(mesh)
             .with(material)
-            .with(transform)
             .with(GlobalTransform::default())
+            .with(transform)
             .build();
     }
 

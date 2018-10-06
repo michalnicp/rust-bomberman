@@ -1,8 +1,12 @@
+#[macro_use]
+extern crate log;
+
 use amethyst::core::Time;
 
 use amethyst::ecs::prelude::{Read, System, WriteStorage};
 use amethyst::ui::{UiFinder, UiText};
 use amethyst::utils::fps_counter::FPSCounter;
+use amethyst::renderer::ScreenDimensions;
 
 pub struct DebugSystem;
 
@@ -12,10 +16,11 @@ impl<'a> System<'a> for DebugSystem {
         WriteStorage<'a, UiText>,
         Read<'a, FPSCounter>,
         UiFinder<'a>,
+        ReadExpect<'a, ScreenDimensions>
     );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (time, mut ui_text, fps_counter, finder) = data;
+        let (time, mut ui_text, fps_counter, finder, screen_dimensions) = data;
 
         // Update the fps every 20 frames, the default sample size for fps counter.
         if time.frame_number() % 20 == 0 {
@@ -26,5 +31,8 @@ impl<'a> System<'a> for DebugSystem {
                 }
             }
         }
+
+        info!(
+
     }
 }
