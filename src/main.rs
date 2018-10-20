@@ -1,3 +1,4 @@
+extern crate gfx;
 extern crate amethyst;
 
 #[macro_use]
@@ -5,18 +6,21 @@ extern crate log;
 extern crate env_logger;
 
 use amethyst::core::transform::TransformBundle;
-use amethyst::input::InputBundle;
 use amethyst::prelude::*;
 use amethyst::renderer::{
     DisplayConfig, DrawFlat, Pipeline, PosTex, RenderBundle, Stage,
 };
 use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::utils::fps_counter::FPSCounterBundle;
+use amethyst::audio::AudioBundle;
 
 mod states;
 mod systems;
 
-const CLEAR_COLOUR: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
+pub const WIDTH: f32 = 1024.;
+pub const HEIGHT: f32 = 768.;
+
+const CLEAR_COLOUR: [f32; 4] = [0., 0., 0., 1.];
 
 fn main() -> amethyst::Result<()> {
     env_logger::init();
@@ -37,10 +41,32 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(FPSCounterBundle::default())?
         .with_bundle(UiBundle::<String, String>::new())?
-        .with_bundle(RenderBundle::new(pipeline_builder, Some(display_config)))?;
+        .with_bundle(RenderBundle::new(pipeline_builder, Some(display_config)))?
+        .with(systems::DebugSystem, "debug_system", &[]);
 
-    let mut game = Application::new(resources_path, states::Loading::default(), game_data_builder)?;
+    let mut game = Application::build(resources_path, states::Loading::default())?
+        .with_resource(Music::default())
+        .build(game_data_builder)?;
     game.run();
 
     Ok(())
+}
+
+use amethyst::audio::SourceHandle;
+
+#[derive(Default)]
+pub struct Music {
+    source: Option<SourceHandle>,
+}
+
+impl Music {
+    pub fn new(source: SourceHandle) -> Self {
+        Music {
+            source: Some(source),
+        }
+    }
+
+    pub fn next(&self) -> Option<SourceHandle> {
+        self.source.as_ref().map(Clone::clone)
+    }
 }
