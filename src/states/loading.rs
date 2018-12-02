@@ -1,6 +1,6 @@
 use amethyst::input::{is_close_requested, is_key_down};
 use amethyst::renderer::{Event, VirtualKeyCode};
-use amethyst::ui::{UiCreator};
+use amethyst::ui::UiCreator;
 use amethyst::{GameData, State, StateData, Trans};
 
 #[derive(Default)]
