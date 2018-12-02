@@ -7,9 +7,7 @@ extern crate env_logger;
 use amethyst::core::transform::TransformBundle;
 use amethyst::input::InputBundle;
 use amethyst::prelude::*;
-use amethyst::renderer::{
-    DisplayConfig, DrawFlat, Pipeline, PosNormTex, RenderBundle, Stage,
-};
+use amethyst::renderer::{DisplayConfig, DrawFlat, Pipeline, PosNormTex, RenderBundle, Stage};
 use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::utils::fps_counter::FPSCounterBundle;
 
